@@ -51,29 +51,41 @@ sequenceDiagram
 ```
 
 # Game Flow
-Lobby
-↓
-Start Round
-↓
-Dealer Assigned
-↓
-Blinds Posted
-↓
-Card Selection
-↓
-Betting
-↓
-Reveal
-↓
-Winner Choice
-↓
-Pot Award
-↓
-Round End
-↓
-Next Round
-↓
-Game Over
+```mermaid
+flowchart TD
+
+    A[Lobby]
+
+    A -->|Host Starts Game| B[Dealer Assigned]
+
+    B --> C[Blinds Posted]
+
+    C --> D[Card Selection]
+
+    D -->|All Players Select Cards| E[Betting]
+
+    E -->|Check / Call / Raise / Fold Complete| F[Winner Calculation]
+
+    F --> G[Reveal Phase]
+
+    G -->|Winner Chooses| H{Reveal Card?}
+
+    H -->|Yes| I[Show Winning Card]
+
+    H -->|No| J[Keep Card Secret]
+
+    I --> K[Pot Awarded]
+
+    J --> K
+
+    K --> L[Round End]
+
+    L --> M{More Rounds?}
+
+    M -->|Yes| B
+
+    M -->|No| N[Game Over]
+```
 
 # File Responsibilities
 ## Components
