@@ -146,34 +146,115 @@ betting completion logic.
 Turn advancement helpers.
 
 # Firestore Schema
-games
-└── {gameId}
-    ├── hostId
-    ├── phase
-    ├── currentRound
-    ├── maxRounds
-    ├── dealerIndex
-    ├── currentPlayerUid
-    ├── currentBet
-    ├── pot
-    ├── deck
-    ├── selectedCards
-    ├── winnerUid
-    └── revealWinnerCard
+## Firestore Collection Structure
+```mermaid
+flowchart TD
 
-Players:
-games
-└── {gameId}
-    └── players
-        └── {uid}
-            ├── name
-            ├── chips
-            ├── currentBet
-            ├── folded
-            ├── hasRaised
-            ├── hasActed
-            ├── selectedCard
-            └── selectedCardIndex
+    G[games]
+
+    G --> G1["{gameId}"]
+
+    G1 --> GM["Game Metadata"]
+    G1 --> RS["Round State"]
+    G1 --> BS["Betting State"]
+    G1 --> WS["Winner State"]
+
+    G1 --> P[players]
+
+    P --> P1["{uid}"]
+    P --> P2["{uid}"]
+    P --> P3["{uid}"]
+```
+
+## Firestore Entity Relationship Diagram
+
+```mermaid
+erDiagram
+
+    GAME ||--o{ PLAYER : contains
+
+    GAME {
+
+        string gameId
+        string hostId
+
+        string status
+        string phase
+
+        int currentRound
+        int maxRounds
+
+        int dealerIndex
+
+        string currentPlayerUid
+
+        int currentBet
+        int pot
+
+        string winnerUid
+
+        bool revealWinnerCard
+
+        array playerOrder
+
+        array deck
+
+        map selectedCards
+    }
+
+    PLAYER {
+
+        string uid
+
+        string name
+
+        int chips
+
+        int currentBet
+
+        bool folded
+
+        bool hasActed
+
+        bool hasRaised
+
+        int selectedCardIndex
+
+        object selectedCard
+    }
+```
+
+## Game Document Breakdown
+```mermaid
+classDiagram
+
+class Game {
+
+    +hostId
+
+    +status
+    +phase
+
+    +currentRound
+    +maxRounds
+
+    +dealerIndex
+
+    +playerOrder
+
+    +currentPlayerUid
+
+    +currentBet
+    +pot
+
+    +deck
+
+    +selectedCards
+
+    +winnerUid
+    +revealWinnerCard
+}
+```
 
 # The Engine
 The game is implemented as a state machine.
@@ -184,7 +265,7 @@ The game is implemented as a state machine.
 
 - The UI automatically changes based on phase.
 
-Valid phases:
+**Valid phases:**
 - lobby
 - selecting
 - betting
