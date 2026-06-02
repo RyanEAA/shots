@@ -3,7 +3,8 @@ import {
   getDoc,
   getDocs,
   collection,
-  writeBatch
+  writeBatch,
+  updateDoc
 } from "firebase/firestore";
 
 import { db } from "./firebase";
@@ -24,6 +25,15 @@ export async function startRound(
 
   const game =
     gameSnap.data();
+
+    if (game.currentRound >= game.maxRounds) {
+        await updateDoc(gameRef, {
+            phase: "gameOver",
+            status: "finished"
+        });
+
+        return;
+    }
 
       const playersSnap =
     await getDocs(

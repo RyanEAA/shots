@@ -22,6 +22,15 @@ import CardGrid from "../components/CardGrid";
 import BettingPanel from "../components/BettingPanel";
 import GameInfoPanel from "../components/GameInfoPanel";
 
+import RevealPanel from "../components/RevealPanel";
+import RoundEndPanel from "../components/RoundEndPanel";
+import GameOverPanel from "../components/GameOverPanel";
+
+import {
+  calculateWinner,
+  chooseRevealAndAwardPot
+} from "../services/revealService";
+
 export default function Game() {
 
   const { gameId } = useParams();
@@ -117,6 +126,16 @@ export default function Game() {
     return unsubscribe;
 
   }, [gameId]);
+
+
+  useEffect(() => {
+    if (
+            game?.phase === "reveal" &&
+            !game.winnerUid
+        ) {
+            calculateWinner(gameId);
+        }
+    }, [game, gameId]);
 
   // -----------------------------
   // Betting Actions
@@ -428,105 +447,73 @@ export default function Game() {
       {/* BETTING */}
       {/* ===================== */}
 
-      {
+        {
+        game.phase === "betting" && (
 
-        game.phase ===
-          "betting" &&
-
-        (
-
-          <BettingPanel
-
-            game={
-              game
-            }
-
-            players={
-              players
-            }
-
-            gameId={
-              gameId
-            }
-
-            onCheck={
-              handleCheck
-            }
-
-            onCall={
-              handleCall
-            }
-
-            onRaise={
-              handleRaise
-            }
-
-            onFold={
-              handleFold
-            }
-
-          />
+            <BettingPanel
+            game={game}
+            players={players}
+            gameId={gameId}
+            onCheck={handleCheck}
+            onCall={handleCall}
+            onRaise={handleRaise}
+            onFold={handleFold}
+            />
 
         )
-
-      }
+        }
 
       {/* ===================== */}
       {/* REVEAL */}
       {/* ===================== */}
 
       {
+        game.phase === "reveal" && (
 
-        game.phase ===
-          "reveal" &&
-
-        (
-
-          <div>
-
-            <h2>
-              Reveal
-            </h2>
-
-            {
-
-              players.map(
-                player => (
-
-                  <div
-                    key={
-                      player.uid
-                    }
-                  >
-
-                    <strong>
-                      {
-                        player.name
-                      }
-                    </strong>
-
-                    {" - "}
-
-                    {
-
-                      player.folded
-                        ? "Folded"
-                        : `${player.selectedCard?.rank ?? "?"}${player.selectedCard?.suit ?? ""}`
-
-                    }
-
-                  </div>
-
+            <RevealPanel
+            game={game}
+            players={players}
+            onReveal={() =>
+                chooseRevealAndAwardPot(
+                gameId,
+                true
                 )
-              )
-
             }
-
-          </div>
+            onHide={() =>
+                chooseRevealAndAwardPot(
+                gameId,
+                false
+                )
+            }
+            />
 
         )
+        }
 
-      }
+        {
+            game.phase === "roundEnd" && (
+
+                <RoundEndPanel
+                game={game}
+                players={players}
+                isHost={isHost}
+                onNextRound={() =>
+                    startRound(gameId)
+                }
+                />
+
+            )
+        }
+
+        {
+            game.phase === "gameOver" && (
+
+                <GameOverPanel
+                players={players}
+                />
+
+            )
+        }
 
     </div>
 

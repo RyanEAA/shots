@@ -154,31 +154,6 @@ export async function pickCard(
           updatedSelected
         ).length;
 
-      // -------------------
-      // Everyone selected?
-      // -------------------
-
-      if (
-        selectedCount >=
-        game.playerOrder
-          .length
-      ) {
-
-        transaction.update(
-          gameRef,
-          {
-
-            selectedCards:
-              updatedSelected,
-
-            phase:
-              "betting"
-
-          }
-        );
-
-        return;
-      }
 
       // -------------------
       // Advance turn
@@ -213,6 +188,33 @@ export async function pickCard(
 
         }
       );
+
+            // -------------------
+      // Everyone selected?
+      // -------------------
+
+      if (
+        selectedCount >=
+        game.playerOrder
+          .length
+      ) {
+
+        transaction.update(
+          gameRef,
+          {
+
+            selectedCards:
+              updatedSelected,
+
+            phase:
+              "betting"
+
+          }
+        );
+
+        return;
+      }
+
 
     }
   );
