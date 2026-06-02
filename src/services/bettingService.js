@@ -206,6 +206,15 @@ export async function checkBet(
   const gameRef =
     doc(db, "games", gameId);
 
+  const playerRef =
+    doc(
+      db,
+      "games",
+      gameId,
+      "players",
+      uid
+    );
+
   await runTransaction(
     db,
     async (transaction) => {
@@ -231,28 +240,45 @@ export async function checkBet(
           d => d.data()
         );
 
+      transaction.update(
+        playerRef,
+        {
+          hasActed: true
+        }
+      );
+
+      const updatedPlayers =
+        players.map(
+          p =>
+            p.uid === uid
+              ? {
+                  ...p,
+                  hasActed: true
+                }
+              : p
+        );
+
       if (
         isBettingRoundComplete(
-            game,
-            players
+          game,
+          updatedPlayers
         )
-        ) {
+      ) {
 
         transaction.update(
-            gameRef,
-            {
+          gameRef,
+          {
             phase: "reveal"
-            }
+          }
         );
 
         return;
-
-        }
+      }
 
       const nextPlayerUid =
         advanceToNextActivePlayer(
           game,
-          players
+          updatedPlayers
         );
 
       transaction.update(
