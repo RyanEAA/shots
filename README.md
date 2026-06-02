@@ -143,7 +143,7 @@ flowchart TD
 betting completion logic.
 
 **gameHelpers.js**
-Turn advancement helpers.
+- Turn advancement helpers.
 
 # Firestore Schema
 ## Firestore Collection Structure
