@@ -77,62 +77,60 @@ Game Over
 
 # File Responsibilities
 ## Components
-Game.jsx
-Main game page and state listener.
+**Game.jsx**
+- Main game page and state listener.
 
-Lobby.jsx
-Game creation and joining.
+**Lobby.jsx**
+- Game creation and joining.
 
-CardGrid.jsx
-52-card selection grid.
+**CardGrid.jsx**
+- 52-card selection grid.
 
-BettingPanel.jsx
-Check, Call, Raise, Fold controls.
+**BettingPanel.jsx**
+- Check, Call, Raise, Fold controls.
 
-GameInfoPanel.jsx
-Round information and player status.
+**GameInfoPanel.jsx**
+- Round information and player status.
 
-RevealPanel.jsx
-Winner reveal choice.
+**RevealPanel.jsx**
+- Winner reveal choice.
 
-RoundEndPanel.jsx
-Round summary.
+**RoundEndPanel.jsx**
+- Round summary.
 
-GameOverPanel.jsx
-Final rankings.
+**GameOverPanel.jsx**
+- Final rankings.
 
 ## Services
-gameService.js
-Lobby management.
+**gameService.js**
+- Lobby management.
 
-roundService.js
-Dealer assignment,
-blind posting,
-round initialization.
+**roundService.js**
+- Dealer assignment,
+- blind posting,
+- round initialization.
 
-cardService.js
-Card selection.
+**cardService.js**
+- Card selection.
 
-bettingService.js
-Betting actions.
+**bettingService.js**
+- Betting actions.
 
-revealService.js
-Winner calculation
-and pot payout.
+**revealService.js**
+- Winner calculation and pot payout.
 
 ## Utilities
-deck.js
-Deck generation and shuffling.
+**deck.js**
+- Deck generation and shuffling.
 
-ranking.js
-Card comparison logic.
+**ranking.js**
+- Card comparison logic.
 
-pokerEngine.js
-Dealer rotation,
-blind positions,
+**pokerEngine.js**
+- Dealer rotation, blind positions,
 betting completion logic.
 
-gameHelpers.js
+**gameHelpers.js**
 Turn advancement helpers.
 
 # Firestore Schema
