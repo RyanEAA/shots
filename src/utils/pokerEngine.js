@@ -46,8 +46,8 @@ export function isBettingRoundComplete(
 
   return activePlayers.every(
     p =>
-      p.currentBet ===
-      game.currentBet
-  );
+        p.hasActed &&
+        p.currentBet === game.currentBet
+    );
 
 }
